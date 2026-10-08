@@ -184,7 +184,7 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
         else -> {
             result.notImplemented()
         }
-        
+       }
     }
 
     override fun onDetachedFromEngine(
