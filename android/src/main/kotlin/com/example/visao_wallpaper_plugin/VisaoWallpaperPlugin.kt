@@ -179,7 +179,7 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
         )
     }
 
-}
+               }
 
         else -> {
             result.notImplemented()
