@@ -187,7 +187,11 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
     try {
 
         val intent = Intent(
-            Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        )
+
+        intent.data = Uri.parse(
+            "package:${applicationContext.packageName}"
         )
 
         intent.addFlags(
