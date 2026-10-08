@@ -31,10 +31,9 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
         call: MethodCall,
         result: Result
     ) {
-        if (call.method != "aplicarWallpaper") {
-            result.notImplemented()
-            return
-        }
+       when (call.method) {
+
+    "aplicarWallpaper" -> {
 
         try {
             val bytes = call.argument<ByteArray>("bytes")
@@ -147,6 +146,17 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
                 null
             )
         }
+    }
+                "abrirBateriaSemRestricoes" -> {
+
+            result.success(false)
+
+        }
+
+        else -> {
+            result.notImplemented()
+        }
+        
     }
 
     override fun onDetachedFromEngine(
