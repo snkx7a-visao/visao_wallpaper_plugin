@@ -8,6 +8,9 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 
 class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
 
@@ -147,11 +150,36 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
             )
         }
     }
-                "abrirBateriaSemRestricoes" -> {
+               "abrirBateriaSemRestricoes" -> {
 
-            result.success(false)
+                    try {
 
-        }
+        val intent = Intent(
+            Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+        )
+
+        intent.data = Uri.parse(
+            "package:${applicationContext.packageName}"
+        )
+
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+
+        applicationContext.startActivity(intent)
+
+        result.success(true)
+
+    } catch (e: Exception) {
+
+        result.error(
+            "ERRO_BATERIA",
+            e.message ?: "Não foi possível abrir configuração de bateria.",
+            null
+        )
+    }
+
+}
 
         else -> {
             result.notImplemented()
