@@ -8,6 +8,9 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 
 class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
 
@@ -31,10 +34,9 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
         call: MethodCall,
         result: Result
     ) {
-        if (call.method != "aplicarWallpaper") {
-            result.notImplemented()
-            return
-        }
+       when (call.method) {
+
+    "aplicarWallpaper" -> {
 
         try {
             val bytes = call.argument<ByteArray>("bytes")
@@ -130,7 +132,7 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
                         "ANDROID_ANTIGO",
                         "Tela de bloqueio separada requer Android 7 ou superior.",
                         null
-                    )
+                     )
                     return
                 }
 
@@ -147,6 +149,75 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
                 null
             )
         }
+    }
+              "abrirBateriaSemRestricoes" -> {
+
+    try {
+
+        val intent = Intent(
+            Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+        )
+
+        intent.data = Uri.parse(
+            "package:${applicationContext.packageName}"
+        )
+
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+
+        applicationContext.startActivity(intent)
+
+        result.success(true)
+
+    } catch (e: Exception) {
+
+        result.error(
+            "ERRO_BATERIA",
+            e.message ?: "Não foi possível abrir configuração de bateria.",
+            null
+        )
+    }
+
+} // fecha bateria
+
+
+"abrirDadosSemRestricoes" -> {
+
+    try {
+
+        val intent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        )
+
+        intent.data = Uri.parse(
+            "package:${applicationContext.packageName}"
+        )
+
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+
+        applicationContext.startActivity(intent)
+
+        result.success(true)
+
+    } catch (e: Exception) {
+
+        result.error(
+            "ERRO_DADOS",
+            e.message ?: "Não foi possível abrir configuração de dados.",
+            null
+        )
+    }
+
+}
+               
+
+        else -> {
+            result.notImplemented()
+        }
+       }
     }
 
     override fun onDetachedFromEngine(
