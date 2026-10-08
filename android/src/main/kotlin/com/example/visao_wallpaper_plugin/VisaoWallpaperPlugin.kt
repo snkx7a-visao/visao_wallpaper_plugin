@@ -150,9 +150,9 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
             )
         }
     }
-               "abrirBateriaSemRestricoes" -> {
+              "abrirBateriaSemRestricoes" -> {
 
-                    try {
+    try {
 
         val intent = Intent(
             Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
@@ -178,7 +178,36 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
             null
         )
     }
-        //erro anterior
+
+} // fecha bateria
+
+
+"abrirDadosSemRestricoes" -> {
+
+    try {
+
+        val intent = Intent(
+            Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS
+        )
+
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+
+        applicationContext.startActivity(intent)
+
+        result.success(true)
+
+    } catch (e: Exception) {
+
+        result.error(
+            "ERRO_DADOS",
+            e.message ?: "Não foi possível abrir configuração de dados.",
+            null
+        )
+    }
+
+}
                }
 
         else -> {
