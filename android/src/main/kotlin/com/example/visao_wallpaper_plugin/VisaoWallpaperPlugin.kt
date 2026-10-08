@@ -178,7 +178,7 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
             null
         )
     }
-
+        //erro anterior
                }
 
         else -> {
