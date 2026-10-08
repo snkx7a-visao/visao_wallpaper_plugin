@@ -132,7 +132,7 @@ class VisaoWallpaperPlugin : FlutterPlugin, MethodCallHandler {
                         "ANDROID_ANTIGO",
                         "Tela de bloqueio separada requer Android 7 ou superior.",
                         null
-                    )
+                     )
                     return
                 }
 
